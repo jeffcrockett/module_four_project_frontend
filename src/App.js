@@ -13,7 +13,9 @@ import API_KEY from "./config.js";
 class App extends React.Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      restaurants: []
+    };
   }
 
   componentDidMount = () => {
