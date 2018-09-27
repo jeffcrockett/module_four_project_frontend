@@ -2,8 +2,8 @@ import React from "react";
 
 import { Card, Icon, Image } from 'semantic-ui-react'
 
-const Restaurant = ({restaurant}) => (
-  <Card>
+const Restaurant = ({restaurant, selectRestaurant}) => (
+  <Card onClick={() => selectRestaurant(restaurant)}>
     {!restaurant.restaurant.thumb ?
     <Icon name="food"/>
   : <Image src={restaurant.restaurant.thumb} />}

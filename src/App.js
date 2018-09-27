@@ -8,6 +8,7 @@ import Pick from "./components/Pick";
 import Search from "./components/Search";
 import RestaurantsContainer from "./components/RestaurantsContainer";
 import { Grid } from 'semantic-ui-react'
+import RestaurantDetail from './components/RestaurantDetail'
 
 import API_KEY from "./config.js";
 
@@ -15,13 +16,21 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      restaurants: []
+      restaurants: [],
+      selected: null
     };
   }
 
   // componentDidMount = () => {
   //   this.searchFetch();
   // };
+
+  selectRestaurant = (restaurant) => {
+    this.setState({
+      selected: restaurant
+    })
+    console.log(this.state.selected)
+  }
 
 
 
@@ -43,7 +52,11 @@ class App extends React.Component {
         <Header />
       <Grid>
         <Grid.Row columns={1}>
-          <Grid.Column>Detail goes here</Grid.Column>
+          <Grid.Column>
+            {this.state.selected ?
+            <RestaurantDetail restaurant={this.state.selected}/>
+          : '' }
+          </Grid.Column>
         </Grid.Row>
           <Grid.Row relaxed columns={2}>
             <Grid.Column centered >
@@ -53,7 +66,8 @@ class App extends React.Component {
                 'max-height': '500px', 'display': 'flex'
               }}>
               <RestaurantsContainer 
-              restaurants={this.state.restaurants} />
+              restaurants={this.state.restaurants} 
+              selectRestaurant={this.selectRestaurant}/>
               </div>
             </Grid.Column>
             <Grid.Column>
