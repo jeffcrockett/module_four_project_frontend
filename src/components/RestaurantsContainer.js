@@ -1,12 +1,12 @@
 import React from "react";
 import Restaurant from "./Restaurant";
 
-const RestaurantsContainer = props => {
+const RestaurantsContainer = ({restaurants}) => {
   return (
     <div>
       <div>Rest Cont.</div>
       <div>
-        <Restaurant />
+        {restaurants.map(restaurant => <Restaurant restaurant={restaurant}/>)}
       </div>
     </div>
   );
