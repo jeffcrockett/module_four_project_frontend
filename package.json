@@ -4,7 +4,9 @@
   "private": true,
   "dependencies": {
     "fullcalendar": "^3.9.0",
+    "moment": "^2.22.2",
     "react": "^16.5.2",
+    "react-big-calendar": "^0.20.1",
     "react-dom": "^16.5.2",
     "react-scripts": "1.1.5",
     "semantic-ui-css": "^2.4.0",
