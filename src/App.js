@@ -18,7 +18,9 @@ class App extends React.Component {
     this.state = {
       restaurants: [],
       selected: null,
-      picks: []
+      picks: [],
+      isPick: false,
+      pickId: null
     };
   }
 
@@ -26,11 +28,14 @@ class App extends React.Component {
     this.fetchPicks();
   };
 
-  fetchPickRestaurant = (id) => {
+  fetchPickRestaurant = (id, pickId, pickVotes) => {
     fetch(`http://developers.zomato.com/api/v2.1/restaurant?apikey=${API_KEY.API_KEY}&res_id=${id}`)
     .then(res => res.json())
     .then(json => {this.setState({
-      selected: json
+      selected: json,
+      isPick: true,
+      pickId: pickId,
+      pickVotes: pickVotes
     })
   })
     
@@ -46,7 +51,8 @@ class App extends React.Component {
 
   selectRestaurant = restaurant => {
     this.setState({
-      selected: restaurant
+      selected: restaurant,
+      isPick: false
     });
     console.log(this.state.selected);
   };
@@ -65,6 +71,27 @@ class App extends React.Component {
       );
   };
 
+  voteOnPick = () => {
+    
+    const updatedVotes = this.state.pickVotes + 1
+    fetch(`http://localhost:3000/api/v1/picks/${this.state.pickId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({votes: updatedVotes})
+    })
+    .then(res => res.json())
+    .then(json => {
+      this.setState({
+        pickVotes: json.votes
+      })
+      console.log(json);
+    })
+    
+  }
+
   render() {
 
     return (
@@ -76,7 +103,9 @@ class App extends React.Component {
               {this.state.selected ? (
                 <RestaurantDetail 
                 restaurant={this.state.selected}
-                fetchPicks={this.fetchPicks} />
+                fetchPicks={this.fetchPicks}
+                isPick={this.state.isPick} 
+                voteOnPick={this.voteOnPick}/>
               ) : (
                 ""
               )}

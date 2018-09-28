@@ -71,8 +71,13 @@ class RestaurantDetail extends React.Component {
               selected={this.state.mealDate}
               onChange={this.handleChange}
             />
+            {!this.props.isPick ?
+            <div>
             <Button onClick={this.handleAddPick.bind(this)}>Add to your picks</Button>
             <Button>Add to my favorites</Button>
+            </div> :
+            <Button onClick={() => this.props.voteOnPick()}>Vote on this pick</Button>
+            }
           </Grid.Row>
         </Grid.Column>
       </Grid>
