@@ -21,9 +21,11 @@ class RestaurantDetail extends React.Component {
   }
 
   handleAddPick = () => {
+    debugger
     const data = {
       user_id: 1,
       restaurant_id: this.props.restaurant.R.res_id,
+      restaurant_name: this.props.restaurant.name,
       date: this.state.mealDate._d,
       votes: 1,
       confirmed: false
