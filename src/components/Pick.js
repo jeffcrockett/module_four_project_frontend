@@ -1,8 +1,10 @@
 import React from 'react'
 
-const Pick = (props) => {
+const Pick = ({pick}) => {
     return (
-        <div>Pick</div>
+        <div>
+            {pick && pick.date}
+        </div>
     )
 }
 

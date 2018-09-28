@@ -20,7 +20,7 @@ class RestaurantDetail extends React.Component {
     });
   }
 
-  handleAddPick() {
+  handleAddPick = () => {
     const data = {
       user_id: null,
       restaurant_id: this.props.restaurant.restaurant.R.res_id,
@@ -28,16 +28,19 @@ class RestaurantDetail extends React.Component {
       votes: 1,
       confirmed: false
     };
-    fetch("https://localhost:3000/picks", {
+    fetch("http://localhost:3000/api/v1/picks", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json"
       },
-      body: JSON.stringfify(data)
+      body: JSON.stringify(data)
     })
       .then(res => res.json())
-      .then(json => console.log(json));
+      .then(json => {
+        console.log(json);
+        this.props.fetchPicks()
+      });
   }
 
   render() {
@@ -64,7 +67,7 @@ class RestaurantDetail extends React.Component {
         <Grid.Column>
           <Grid.Row>A map maybe?</Grid.Row>
           <Grid.Row>
-            <Button onClick={this.handleAddPick}>Add to your picks</Button>
+            <Button onClick={this.handleAddPick.bind(this)}>Add to your picks</Button>
             <DatePicker
               selected={this.state.mealDate}
               onChange={this.handleChange}

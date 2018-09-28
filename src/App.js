@@ -17,13 +17,22 @@ class App extends React.Component {
     super();
     this.state = {
       restaurants: [],
-      selected: null
+      selected: null,
+      picks: []
     };
   }
 
-  // componentDidMount = () => {
-  //   this.searchFetch();
-  // };
+  componentDidMount = () => {
+    this.fetchPicks();
+  };
+  
+  fetchPicks = () => {
+    fetch('http://localhost:3000/api/v1/picks')
+    .then(res => res.json())
+    .then(json => this.setState({
+      picks: json
+    }))
+  }
 
   selectRestaurant = restaurant => {
     this.setState({
@@ -54,7 +63,9 @@ class App extends React.Component {
           <Grid.Row columns={1}>
             <Grid.Column>
               {this.state.selected ? (
-                <RestaurantDetail restaurant={this.state.selected} />
+                <RestaurantDetail 
+                restaurant={this.state.selected}
+                fetchPicks={this.fetchPicks} />
               ) : (
                 ""
               )}
