@@ -5,18 +5,18 @@ import noun_Food from "../noun_Food.png";
 
 const Restaurant = ({ restaurant, selectRestaurant }) => (
   <Card onClick={() => selectRestaurant(restaurant)}>
-    {!restaurant.restaurant.thumb ? (
+    {!restaurant.thumb ? (
       <Image src={noun_Food} size="small" centered />
     ) : (
-      <Image src={restaurant.restaurant.thumb} />
+      <Image src={restaurant.thumb} />
     )}
     <Card.Content>
-      <Card.Header>{restaurant.restaurant.name}</Card.Header>
+      <Card.Header>{restaurant.name}</Card.Header>
       <Card.Meta>
-        <span className="date">{restaurant.restaurant.cuisines}</span>
+        <span className="date">{restaurant.cuisines}</span>
       </Card.Meta>
       <Card.Description>
-        {restaurant.restaurant.location.locality}
+        {restaurant.location.locality}
       </Card.Description>
     </Card.Content>
     <Card.Content extra>

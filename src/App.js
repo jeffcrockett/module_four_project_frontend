@@ -9,7 +9,7 @@ import Search from "./components/Search";
 import RestaurantsContainer from "./components/RestaurantsContainer";
 import { Grid } from "semantic-ui-react";
 import RestaurantDetail from "./components/RestaurantDetail";
-
+import PicksContainer from './components/PicksContainer'
 import API_KEY from "./config.js";
 
 class App extends React.Component {
@@ -25,7 +25,17 @@ class App extends React.Component {
   componentDidMount = () => {
     this.fetchPicks();
   };
-  
+
+  fetchPickRestaurant = (id) => {
+    fetch(`http://developers.zomato.com/api/v2.1/restaurant?apikey=${API_KEY.API_KEY}&res_id=${id}`)
+    .then(res => res.json())
+    .then(json => {this.setState({
+      selected: json
+    })
+  })
+    
+  }
+
   fetchPicks = () => {
     fetch('http://localhost:3000/api/v1/picks')
     .then(res => res.json())
@@ -50,12 +60,13 @@ class App extends React.Component {
       .then(r => r.json())
       .then(data =>
         this.setState({
-          restaurants: data.restaurants
+          restaurants: data.restaurants.map(r => r.restaurant)
         })
       );
   };
 
   render() {
+
     return (
       <div className="App">
         <Header />
@@ -88,7 +99,9 @@ class App extends React.Component {
               </div>
             </Grid.Column>
             <Grid.Column>
-              <Pick />
+              <PicksContainer 
+              picks={this.state.picks} 
+              fetchPickRestaurant={this.fetchPickRestaurant}/>
             </Grid.Column>
           </Grid.Row>
         </Grid>

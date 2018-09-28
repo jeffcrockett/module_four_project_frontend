@@ -1,8 +1,8 @@
 import React from 'react'
 
-const Pick = ({pick}) => {
+const Pick = ({pick, fetchPickRestaurant}) => {
     return (
-        <div>
+        <div onClick={() => fetchPickRestaurant(pick.restaurant_id)}>
             {pick && pick.date}
         </div>
     )
