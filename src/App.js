@@ -25,7 +25,7 @@ class App extends React.Component {
   }
 
   componentDidMount = () => {
-    this.fetchPicks();
+    // this.fetchPicks();
   };
 
   fetchPickRestaurant = (id, pickId, pickVotes) => {
