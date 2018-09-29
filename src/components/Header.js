@@ -18,7 +18,7 @@ export default class Header extends React.Component {
     const { activeItem } = this.state;
 
     return (
-      <Menu tabular>
+      <Menu>
         <Link to="/welcome">
           <Menu.Item>
             <Image src={MealPix} size="tiny" />
@@ -34,13 +34,15 @@ export default class Header extends React.Component {
           />
         </Link>
 
-        <Link to="/login">
-          <Menu.Item
-            name="login"
-            active={activeItem === "login"}
-            onClick={this.handleItemClick}
-          />
-        </Link>
+        <Menu.Menu position="right">
+          <Link to="/login">
+            <Menu.Item
+              name="login"
+              active={activeItem === "login"}
+              onClick={this.handleItemClick}
+            />
+          </Link>
+        </Menu.Menu>
       </Menu>
     );
   }

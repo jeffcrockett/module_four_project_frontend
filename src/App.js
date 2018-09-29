@@ -109,7 +109,7 @@ class App extends React.Component {
           <Route path="/login" component={Login} />
           <Route path="/main">
             <Grid>
-              <Grid.Row columns={1}>
+              <Grid.Row columns={1} style={{ height: "400px" }}>
                 <Grid.Column>
                   {this.state.selected ? (
                     <RestaurantDetail
@@ -124,9 +124,11 @@ class App extends React.Component {
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row relaxed columns={2}>
-                <Grid.Column centered>
-                  <Search getRestaurants={this.getRestaurants} />
-                  <div
+                <Grid.Column centered padded>
+                  <Grid.Row>
+                    <Search getRestaurants={this.getRestaurants} />
+                  </Grid.Row>
+                  <Grid.Row
                     style={{
                       overflow: "scroll",
                       "max-height": "500px",
@@ -137,7 +139,7 @@ class App extends React.Component {
                       restaurants={this.state.restaurants}
                       selectRestaurant={this.selectRestaurant}
                     />
-                  </div>
+                  </Grid.Row>
                 </Grid.Column>
                 <Grid.Column>
                   <PicksContainer
