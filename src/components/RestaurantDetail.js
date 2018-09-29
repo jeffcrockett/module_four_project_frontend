@@ -3,6 +3,7 @@ import React from "react";
 import { Card, Icon, Image, Grid, Button } from "semantic-ui-react";
 import DatePicker from "react-datepicker";
 import moment from "moment";
+// import GoogleMapReact from "google-map-react";
 import "react-datepicker/dist/react-datepicker.css";
 
 class RestaurantDetail extends React.Component {
@@ -21,11 +22,9 @@ class RestaurantDetail extends React.Component {
   }
 
   handleAddPick = () => {
-    debugger
     const data = {
       user_id: 1,
       restaurant_id: this.props.restaurant.R.res_id,
-      restaurant_name: this.props.restaurant.name,
       date: this.state.mealDate._d,
       votes: 1,
       confirmed: false
@@ -41,9 +40,9 @@ class RestaurantDetail extends React.Component {
       .then(res => res.json())
       .then(json => {
         console.log(json);
-        this.props.fetchPicks()
+        this.props.fetchPicks();
       });
-  }
+  };
 
   render() {
     return (
@@ -51,18 +50,13 @@ class RestaurantDetail extends React.Component {
         <Grid.Column>
           <Card>
             <h1>{this.props.restaurant.name}</h1>
-            <div>
-              Address: {this.props.restaurant.location.address}
-            </div>
+            <div>Address: {this.props.restaurant.location.address}</div>
             <div>Cuisine(s): {this.props.restaurant.cuisines}</div>
             <div>
-              User Rating:{" "}
-              {this.props.restaurant.user_rating.rating_text}
+              User Rating: {this.props.restaurant.user_rating.rating_text}
             </div>
             <div>
-              Cost for Two: ${
-                this.props.restaurant.average_cost_for_two
-              }
+              Cost for Two: ${this.props.restaurant.average_cost_for_two}
             </div>
           </Card>
         </Grid.Column>
@@ -73,13 +67,10 @@ class RestaurantDetail extends React.Component {
               selected={this.state.mealDate}
               onChange={this.handleChange}
             />
-            {!this.props.isPick ?
-            <div>
-            <Button onClick={this.handleAddPick.bind(this)}>Add to your picks</Button>
+            <Button onClick={this.handleAddPick.bind(this)}>
+              Add to your picks
+            </Button>
             <Button>Add to my favorites</Button>
-            </div> :
-            <Button onClick={() => this.props.voteOnPick()}>Vote on this pick</Button>
-            }
           </Grid.Row>
         </Grid.Column>
       </Grid>

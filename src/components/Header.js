@@ -1,12 +1,47 @@
-import React from 'react'
+import React from "react";
+import { Link } from "react-router-dom";
+import { Menu, Image } from "semantic-ui-react";
 
-const Header = (props) => {
+import MealPix from "../MealPix.png";
+
+export default class Header extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      activeItem: "main"
+    };
+  }
+
+  handleItemClick = (e, { name }) => this.setState({ activeItem: name });
+
+  render() {
+    const { activeItem } = this.state;
+
     return (
-        <div class='ui clearing segment'>
-            <h2 class='ui right floated header'>Login</h2>
-            <h2 class='ui left floated header'>Mealpix</h2>
-        </div>
-    )
-}
+      <Menu tabular>
+        <Link to="/welcome">
+          <Menu.Item>
+            <Image src={MealPix} size="tiny" />
+            <h1>MealPix</h1>
+          </Menu.Item>
+        </Link>
 
-export default Header
+        <Link to="/main">
+          <Menu.Item
+            name="main"
+            active={activeItem === "main"}
+            onClick={this.handleItemClick}
+          />
+        </Link>
+
+        <Link to="/login">
+          <Menu.Item
+            name="login"
+            active={activeItem === "login"}
+            onClick={this.handleItemClick}
+          />
+        </Link>
+      </Menu>
+    );
+  }
+}

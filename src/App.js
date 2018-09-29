@@ -1,16 +1,20 @@
-import React, { Component } from "react";
+import React from "react";
+import { Route, Switch } from "react-router-dom";
+import { Grid } from "semantic-ui-react";
+
 import logo from "./logo.svg";
 import "./App.css";
+import API_KEY from "./config.js";
 
-import Calendar from "./components/Calendar";
+// import Calendar from "./components/Calendar";
 import Header from "./components/Header";
+import FrontPage from "./components/FrontPage";
+import Login from "./components/Login";
 import Pick from "./components/Pick";
 import Search from "./components/Search";
 import RestaurantsContainer from "./components/RestaurantsContainer";
-import { Grid } from "semantic-ui-react";
 import RestaurantDetail from "./components/RestaurantDetail";
-import PicksContainer from './components/PicksContainer'
-import API_KEY from "./config.js";
+import PicksContainer from "./components/PicksContainer";
 
 class App extends React.Component {
   constructor() {
@@ -29,25 +33,31 @@ class App extends React.Component {
   };
 
   fetchPickRestaurant = (id, pickId, pickVotes) => {
-    fetch(`http://developers.zomato.com/api/v2.1/restaurant?apikey=${API_KEY.API_KEY}&res_id=${id}`)
-    .then(res => res.json())
-    .then(json => {this.setState({
-      selected: json,
-      isPick: true,
-      pickId: pickId,
-      pickVotes: pickVotes
-    })
-  })
-    
-  }
+    fetch(
+      `http://developers.zomato.com/api/v2.1/restaurant?apikey=${
+        API_KEY.API_KEY
+      }&res_id=${id}`
+    )
+      .then(res => res.json())
+      .then(json => {
+        this.setState({
+          selected: json,
+          isPick: true,
+          pickId: pickId,
+          pickVotes: pickVotes
+        });
+      });
+  };
 
   fetchPicks = () => {
-    fetch('http://localhost:3000/api/v1/picks')
-    .then(res => res.json())
-    .then(json => this.setState({
-      picks: json
-    }))
-  }
+    fetch("http://localhost:3000/api/v1/picks")
+      .then(res => res.json())
+      .then(json =>
+        this.setState({
+          picks: json
+        })
+      );
+  };
 
   selectRestaurant = restaurant => {
     this.setState({
@@ -72,69 +82,73 @@ class App extends React.Component {
   };
 
   voteOnPick = () => {
-    
-    const updatedVotes = this.state.pickVotes + 1
+    const updatedVotes = this.state.pickVotes + 1;
     fetch(`http://localhost:3000/api/v1/picks/${this.state.pickId}`, {
-      method: 'PATCH',
+      method: "PATCH",
       headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        "Content-Type": "application/json",
+        Accept: "application/json"
       },
-      body: JSON.stringify({votes: updatedVotes})
+      body: JSON.stringify({ votes: updatedVotes })
     })
-    .then(res => res.json())
-    .then(json => {
-      this.setState({
-        pickVotes: json.votes
-      })
-      console.log(json);
-    })
-    
-  }
+      .then(res => res.json())
+      .then(json => {
+        this.setState({
+          pickVotes: json.votes
+        });
+        console.log(json);
+      });
+  };
 
   render() {
-
     return (
       <div className="App">
         <Header />
-        <Grid>
-          <Grid.Row columns={1}>
-            <Grid.Column>
-              {this.state.selected ? (
-                <RestaurantDetail 
-                restaurant={this.state.selected}
-                fetchPicks={this.fetchPicks}
-                isPick={this.state.isPick} 
-                voteOnPick={this.voteOnPick}/>
-              ) : (
-                ""
-              )}
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row relaxed columns={2}>
-            <Grid.Column centered>
-              <Search getRestaurants={this.getRestaurants} />
-              <div
-                style={{
-                  overflow: "scroll",
-                  "max-height": "500px",
-                  display: "flex"
-                }}
-              >
-                <RestaurantsContainer
-                  restaurants={this.state.restaurants}
-                  selectRestaurant={this.selectRestaurant}
-                />
-              </div>
-            </Grid.Column>
-            <Grid.Column>
-              <PicksContainer 
-              picks={this.state.picks} 
-              fetchPickRestaurant={this.fetchPickRestaurant}/>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-        {/* <Calendar /> */}
+        <Switch>
+          <Route path="/welcome" component={FrontPage} />
+          <Route path="/login" component={Login} />
+          <Route path="/main">
+            <Grid>
+              <Grid.Row columns={1}>
+                <Grid.Column>
+                  {this.state.selected ? (
+                    <RestaurantDetail
+                      restaurant={this.state.selected}
+                      fetchPicks={this.fetchPicks}
+                      isPick={this.state.isPick}
+                      voteOnPick={this.voteOnPick}
+                    />
+                  ) : (
+                    ""
+                  )}
+                </Grid.Column>
+              </Grid.Row>
+              <Grid.Row relaxed columns={2}>
+                <Grid.Column centered>
+                  <Search getRestaurants={this.getRestaurants} />
+                  <div
+                    style={{
+                      overflow: "scroll",
+                      "max-height": "500px",
+                      display: "flex"
+                    }}
+                  >
+                    <RestaurantsContainer
+                      restaurants={this.state.restaurants}
+                      selectRestaurant={this.selectRestaurant}
+                    />
+                  </div>
+                </Grid.Column>
+                <Grid.Column>
+                  <PicksContainer
+                    picks={this.state.picks}
+                    fetchPickRestaurant={this.fetchPickRestaurant}
+                  />
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+          </Route>
+        </Switch>
       </div>
     );
   }
