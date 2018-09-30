@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 import { Grid } from "semantic-ui-react";
+import "zipcodes";
 
 import logo from "./logo.svg";
 import "./App.css";
@@ -17,6 +18,7 @@ import RestaurantDetail from "./components/RestaurantDetail";
 import PicksContainer from "./components/PicksContainer";
 
 class App extends React.Component {
+  // zipcodes = require("zipcodes");
   constructor() {
     super();
     this.state = {
@@ -68,10 +70,11 @@ class App extends React.Component {
   };
 
   getRestaurants = query => {
+    // debugger;
     fetch(
-      `https://developers.zomato.com/api/v2.1/search?q=${query}&lat=38.9&lon=-77&apikey=${
-        API_KEY.API_KEY
-      }&sort=real_distance`
+      `https://developers.zomato.com/api/v2.1/search?q=${
+        query.value
+      }&lat=38.9&lon=-77&apikey=${API_KEY.API_KEY}&sort=real_distance`
     )
       .then(r => r.json())
       .then(data =>
@@ -101,6 +104,7 @@ class App extends React.Component {
   };
 
   render() {
+    // debugger;
     return (
       <div className="App">
         <Header />
@@ -124,11 +128,13 @@ class App extends React.Component {
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row relaxed columns={2}>
-                <Grid.Column centered padded>
+                <Grid.Column>
                   <Grid.Row>
                     <Search getRestaurants={this.getRestaurants} />
                   </Grid.Row>
                   <Grid.Row
+                    centered
+                    padded
                     style={{
                       overflow: "scroll",
                       "max-height": "500px",
