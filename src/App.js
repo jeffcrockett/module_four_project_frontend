@@ -6,11 +6,11 @@ import { Grid } from "semantic-ui-react";
 import logo from "./logo.svg";
 import "./App.css";
 import API_KEY from "./config.js";
-import LoginForm from './components/LoginForm'
-import RegisterForm from './components/RegisterForm'
+import LoginForm from "./components/LoginForm";
+import RegisterForm from "./components/RegisterForm";
 
 // import Calendar from "./components/Calendar";
-import Map from './components/Map'
+import Map from "./components/Map";
 import Header from "./components/Header";
 import FrontPage from "./components/FrontPage";
 import Login from "./components/Login";
@@ -31,7 +31,8 @@ class App extends React.Component {
       isPick: false,
       pickId: null,
       userInfo: null,
-      mapAddress: null
+      mapAddress: null,
+      sortFilter: "date"
     };
   }
 
@@ -51,10 +52,8 @@ class App extends React.Component {
           this.updateUserInfo(response.user);
           // this.context.history.push("/profile");
         });
-        this.fetchPicks()
+      this.fetchPicks();
     }
-  
-    // this.fetchPicks();
   };
 
   fetchPickRestaurant = (id, pickId, pickVotes) => {
@@ -92,7 +91,7 @@ class App extends React.Component {
   selectRestaurant = restaurant => {
     this.setState({
       selected: restaurant,
-      isPick: false, 
+      isPick: false,
       mapAddress: restaurant.location.address
     });
 
@@ -129,38 +128,57 @@ class App extends React.Component {
         this.setState({
           pickVotes: json.votes
         });
-        this.fetchPicks()
+        this.fetchPicks();
         console.log(json);
       });
   };
 
-  removePick = (id) => {
+  removePick = id => {
     fetch(`http://localhost:3000/api/v1/picks/${id}`, {
-      method: 'DELETE',
-      body: JSON.stringify({id: id})
-    }).then(res => res.json()).then(json => this.fetchPicks())
-  }
+      method: "DELETE",
+      body: JSON.stringify({ id: id })
+    })
+      .then(res => res.json())
+      .then(json => this.fetchPicks());
+  };
+
+  handleSortChange = e => {
+    // debugger;
+    this.setState({
+      sortFilter: e.target.value
+    });
+    if (this.state.sortFilter === "votes") {
+      this.setState({
+        picks: this.state.picks.sort(
+          (a, b) => new Date(a.date) - new Date(b.date)
+        )
+      });
+    } else {
+      this.setState({
+        picks: this.state.picks.sort((a, b) => b.votes - a.votes)
+      });
+    }
+  };
 
   render() {
     // debugger;
     return (
       <div className="App">
-        <Header userInfo={this.state.userInfo} logout={this.logout}/>
+        <Header userInfo={this.state.userInfo} logout={this.logout} />
         {/* <Map/> */}
         <Switch>
           <Route path="/welcome" component={FrontPage} />
-        <Route
-          exact
-          path="/login"
-          render={() => <LoginForm 
-            updateUserInfo={this.updateUserInfo} />}
+          <Route
+            exact
+            path="/login"
+            render={() => <LoginForm updateUserInfo={this.updateUserInfo} />}
           />
-            <Route
-              exact 
-              path="/register"
-              render={() => <RegisterForm updateUserInfo={this.updateUserInfo}/>}
-            />
-        
+          <Route
+            exact
+            path="/register"
+            render={() => <RegisterForm updateUserInfo={this.updateUserInfo} />}
+          />
+
           <Route path="/main">
             <Grid>
               <Grid.Row columns={1}>
@@ -200,6 +218,7 @@ class App extends React.Component {
                 </Grid.Column>
                 <Grid.Column>
                   <PicksContainer
+                    handleSortChange={this.handleSortChange}
                     picks={this.state.picks}
                     fetchPickRestaurant={this.fetchPickRestaurant}
                     userInfo={this.state.userInfo}
