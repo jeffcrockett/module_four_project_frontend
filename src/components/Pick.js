@@ -5,27 +5,33 @@ const Pick = ({ pick, fetchPickRestaurant, userInfo, removePick }) => {
   // debugger;
   return (
     <div
-      onClick={() =>{
-          if(!(pick.user_id === userInfo.id)){
-          fetchPickRestaurant(pick.restaurant_id, pick.id, pick.votes)
-          }
-          else {
-            console.log('pick user id is ', pick.user_id)
-            console.log('user id is ', userInfo.id)
-          }
+      onClick={() => {
+        if (!(pick.user_id === userInfo.id)) {
+          fetchPickRestaurant(pick.restaurant_id, pick.id, pick.votes);
+        } else {
+          console.log("pick user id is ", pick.user_id);
+          console.log("user id is ", userInfo.id);
         }
-      }
+      }}
     >
-      {pick && (
+      {pick && userInfo ? (
         <div>
           <p>
-            {pick.restaurant_name} <br/> suggested by {pick.user.username} for <br/>
+            {pick.restaurant_name} <br /> suggested by {pick.user.username} for{" "}
+            <br />
             {date.toDateString()}
           </p>
-      <p>Votes: {pick.votes} {pick.user_id === userInfo.id ? <button onClick={() => removePick(pick.id)}>Remove</button> : ''}</p>
+          <p>
+            Votes: {pick.votes}{" "}
+            {pick.user_id === userInfo.id ? (
+              <button onClick={() => removePick(pick.id)}>Remove</button>
+            ) : (
+              ""
+            )}
+          </p>
           <hr />
         </div>
-      )}
+      ) : null}
     </div>
   );
 };

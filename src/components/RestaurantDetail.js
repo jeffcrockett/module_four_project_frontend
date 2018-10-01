@@ -1,4 +1,5 @@
 import React, { Fragment } from "react";
+import { Redirect } from "react-router-dom";
 import { Card, Icon, Image, Grid, Button } from "semantic-ui-react";
 import DatePicker from "react-datepicker";
 import moment from "moment";
@@ -20,29 +21,34 @@ class RestaurantDetail extends React.Component {
   }
 
   handleAddPick = () => {
-    const data = {
-      user_id: this.props.userInfo.id,
-      restaurant_id: this.props.restaurant.R.res_id,
-      restaurant_name: this.props.restaurant.name,
-      date: this.state.mealDate._d,
-      votes: 1,
-      confirmed: false
-    };
-    const token = localStorage.getItem('token')
-    fetch("http://localhost:3000/api/v1/picks", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify(data)
-    })
-      .then(res => res.json())
-      .then(json => {
-        console.log(json);
-        this.props.fetchPicks();
-      });
+    if (this.props.userInfo) {
+      const data = {
+        user_id: this.props.userInfo.id,
+        restaurant_id: this.props.restaurant.R.res_id,
+        restaurant_name: this.props.restaurant.name,
+        date: this.state.mealDate._d,
+        votes: 1,
+        confirmed: false
+      };
+      const token = localStorage.getItem("token");
+      fetch("http://localhost:3000/api/v1/picks", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(data)
+      })
+        .then(res => res.json())
+        .then(json => {
+          console.log(json);
+          this.props.fetchPicks();
+        });
+    } else {
+      <Redirect to="/login" />;
+      // this.props.history.push("/login");
+    }
   };
 
   render() {
@@ -81,18 +87,20 @@ class RestaurantDetail extends React.Component {
             />
           </Grid.Row>
           <Grid.Row>
-            {!this.props.isPick ?
-            <Fragment>
-            <DatePicker
-              selected={this.state.mealDate}
-              onChange={this.handleChange}
-            />
-            <Button onClick={this.handleAddPick.bind(this)}>
-              Add to your picks
-            </Button>
-            <Button>Add to my favorites</Button>
-            </Fragment>
-          : <Button onClick={this.props.voteOnPick}>Vote</Button>}
+            {!this.props.isPick ? (
+              <Fragment>
+                <DatePicker
+                  selected={this.state.mealDate}
+                  onChange={this.handleChange}
+                />
+                <Button onClick={this.handleAddPick.bind(this)}>
+                  Add to your picks
+                </Button>
+                <Button>Add to my favorites</Button>
+              </Fragment>
+            ) : (
+              <Button onClick={this.props.voteOnPick}>Vote</Button>
+            )}
           </Grid.Row>
         </Grid.Column>
       </Grid>
