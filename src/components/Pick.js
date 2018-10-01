@@ -1,6 +1,6 @@
 import React from "react";
 
-const Pick = ({ pick, fetchPickRestaurant }) => {
+const Pick = ({ pick, fetchPickRestaurant, userInfo }) => {
   let date = new Date(pick.date);
   // debugger;
   return (
@@ -12,8 +12,7 @@ const Pick = ({ pick, fetchPickRestaurant }) => {
       {pick && (
         <div>
           <p>
-            {pick.restaurant_name}, suggested by User {pick.user_id} for lunch
-            on
+            {pick.restaurant_name} <br/> suggested by {pick.user.username} for <br/>
             {date.toDateString()}
           </p>
           <p>Votes: {pick.votes}</p>

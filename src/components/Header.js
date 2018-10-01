@@ -1,12 +1,12 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
 import { Menu, Image } from "semantic-ui-react";
 
 import MealPix from "../MealPix.png";
 
 export default class Header extends React.Component {
-    constructor() {
-    super();
+    constructor(props) {
+    super(props);
     this.state = {
         activeItem: "main"
     };
@@ -27,23 +27,25 @@ export default class Header extends React.Component {
         </Link>
 
         <Link to="/main">
-          <Menu.Item
+          {/* <Menu.Item
             name="main"
             active={activeItem === "main"}
             onClick={this.handleItemClick}
-          />
+          /> */}
         </Link>
-        <div class='ui clearing segment'>
-            {userInfo ? 
-            <Link to="/"><h2 onClick={logout} class='ui right floated header'>Logout</h2></Link>
-                : <Fragment>
-                    <Link to="/register"><h2 class='ui right floated header'>Register</h2></Link>
-                    <Link to="/login"><h2 class='ui right floated header'>Login</h2></Link>
-                    </Fragment>}
-            <h2 class='ui left floated header'>Mealpix</h2>
-        </div>
-
         <Menu.Menu position="right">
+        <div class='ui clearing segment'>
+            {this.props.userInfo ? 
+            <Link to="/"><h2 onClick={this.props.logout} class='ui right floated header'>Logout</h2></Link>
+                : <Fragment>
+                    <Link to="/register"><a class='ui right floated header'>Register</a></Link>
+                    <Link to="/login"><a class='ui right floated header'>Login</a></Link>
+                    </Fragment>}
+           
+        </div>
+        </Menu.Menu>
+
+        {/* <Menu.Menu position="right">
           <Link to="/login">
             <Menu.Item
               name="login"
@@ -51,7 +53,7 @@ export default class Header extends React.Component {
               onClick={this.handleItemClick}
             />
           </Link>
-        </Menu.Menu>
+        </Menu.Menu> */}
       </Menu>
     );
   }

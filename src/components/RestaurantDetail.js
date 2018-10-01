@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Card, Icon, Image, Grid, Button } from "semantic-ui-react";
 import DatePicker from "react-datepicker";
 import moment from "moment";
@@ -21,9 +21,9 @@ class RestaurantDetail extends React.Component {
 
   handleAddPick = () => {
     const data = {
-      user_id: 1,
+      user_id: this.props.userInfo.id,
       restaurant_id: this.props.restaurant.R.res_id,
-      restaurant_name: this.props.restaurant.R.name,
+      restaurant_name: this.props.restaurant.name,
       date: this.state.mealDate._d,
       votes: 1,
       confirmed: false
@@ -81,6 +81,8 @@ class RestaurantDetail extends React.Component {
             />
           </Grid.Row>
           <Grid.Row>
+            {!this.props.isPick ?
+            <Fragment>
             <DatePicker
               selected={this.state.mealDate}
               onChange={this.handleChange}
@@ -89,6 +91,8 @@ class RestaurantDetail extends React.Component {
               Add to your picks
             </Button>
             <Button>Add to my favorites</Button>
+            </Fragment>
+          : <Button onClick={this.props.voteOnPick}>Vote</Button>}
           </Grid.Row>
         </Grid.Column>
       </Grid>

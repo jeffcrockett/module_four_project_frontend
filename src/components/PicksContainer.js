@@ -7,11 +7,14 @@ class PicksContainer extends React.Component {
     }
     
     render() {
+        const sortedPicks = this.props.picks.sort((a, b) => a.date - b.date)
+        console.log('sorted picks are ', sortedPicks)
         return (
             <div>
-                {this.props.picks.map(pick => <Pick 
+                {sortedPicks.map(pick => <Pick 
                 pick={pick}
-                fetchPickRestaurant={this.props.fetchPickRestaurant}/>)}
+                fetchPickRestaurant={this.props.fetchPickRestaurant}
+                userInfo={this.props.userInfo}/>)}
             </div>
         )
     }

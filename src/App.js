@@ -2,7 +2,7 @@ import React from "react";
 import { Route, Switch, Redirect, withRouter } from "react-router-dom";
 import { Grid } from "semantic-ui-react";
 
-import Calendar from "./components/Calendar";
+// import Calendar from "./components/Calendar";
 import logo from "./logo.svg";
 import "./App.css";
 import API_KEY from "./config.js";
@@ -10,6 +10,7 @@ import LoginForm from './components/LoginForm'
 import RegisterForm from './components/RegisterForm'
 
 // import Calendar from "./components/Calendar";
+import Map from './components/Map'
 import Header from "./components/Header";
 import FrontPage from "./components/FrontPage";
 import Login from "./components/Login";
@@ -29,7 +30,8 @@ class App extends React.Component {
       picks: [],
       isPick: false,
       pickId: null,
-      userInfo: null
+      userInfo: null,
+      mapAddress: null
     };
   }
 
@@ -49,6 +51,7 @@ class App extends React.Component {
           this.updateUserInfo(response.user);
           // this.context.history.push("/profile");
         });
+        this.fetchPicks()
     }
   
     // this.fetchPicks();
@@ -89,8 +92,10 @@ class App extends React.Component {
   selectRestaurant = restaurant => {
     this.setState({
       selected: restaurant,
-      isPick: false
+      isPick: false, 
+      mapAddress: restaurant.location.address
     });
+
     console.log(this.state.selected);
   };
 
@@ -124,6 +129,7 @@ class App extends React.Component {
         this.setState({
           pickVotes: json.votes
         });
+        this.fetchPicks()
         console.log(json);
       });
   };
@@ -133,6 +139,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <Header userInfo={this.state.userInfo} logout={this.logout}/>
+        {/* <Map/> */}
         <Switch>
           <Route path="/welcome" component={FrontPage} />
         <Route
@@ -149,7 +156,7 @@ class App extends React.Component {
         
           <Route path="/main">
             <Grid>
-              <Grid.Row columns={1} style={{ height: "400px" }}>
+              <Grid.Row columns={1}>
                 <Grid.Column>
                   {this.state.selected ? (
                     <RestaurantDetail
@@ -157,6 +164,7 @@ class App extends React.Component {
                       fetchPicks={this.fetchPicks}
                       isPick={this.state.isPick}
                       voteOnPick={this.voteOnPick}
+                      userInfo={this.state.userInfo}
                     />
                   ) : (
                     ""
@@ -187,6 +195,7 @@ class App extends React.Component {
                   <PicksContainer
                     picks={this.state.picks}
                     fetchPickRestaurant={this.fetchPickRestaurant}
+                    userInfo={this.state.userInfo}
                   />
                 </Grid.Column>
               </Grid.Row>
