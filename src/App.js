@@ -100,17 +100,24 @@ class App extends React.Component {
 
   getRestaurants = query => {
     // debugger;
-    fetch(
-      `https://developers.zomato.com/api/v2.1/search?q=${
-        query.value
-      }&lat=38.9&lon=-77&apikey=${API_KEY.API_KEY}&sort=real_distance`
-    )
+    fetch(`http://api.zippopotam.us/us/${query.zipcode}`)
       .then(r => r.json())
-      .then(data =>
-        this.setState({
-          restaurants: data.restaurants.map(r => r.restaurant)
-        })
-      );
+      .then(json => {
+        debugger;
+        fetch(
+          `https://developers.zomato.com/api/v2.1/search?q=${query.value}&lat=${
+            json.places[0].latitude
+          }&lon=${json.places[0].longitude}&apikey=${
+            API_KEY.API_KEY
+          }&sort=real_distance`
+        )
+          .then(r => r.json())
+          .then(data =>
+            this.setState({
+              restaurants: data.restaurants.map(r => r.restaurant)
+            })
+          );
+      });
   };
 
   voteOnPick = () => {
