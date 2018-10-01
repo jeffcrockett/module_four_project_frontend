@@ -134,6 +134,13 @@ class App extends React.Component {
       });
   };
 
+  removePick = (id) => {
+    fetch(`http://localhost:3000/api/v1/picks/${id}`, {
+      method: 'DELETE',
+      body: JSON.stringify({id: id})
+    }).then(res => res.json()).then(json => this.fetchPicks())
+  }
+
   render() {
     // debugger;
     return (
@@ -196,6 +203,7 @@ class App extends React.Component {
                     picks={this.state.picks}
                     fetchPickRestaurant={this.fetchPickRestaurant}
                     userInfo={this.state.userInfo}
+                    removePick={this.removePick}
                   />
                 </Grid.Column>
               </Grid.Row>
