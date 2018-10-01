@@ -23,7 +23,7 @@ class Search extends React.Component {
         }}
       >
         <Form>
-          Enter a zipcode to search near:
+          {/* Enter a zipcode to search near:
           <Input
             onChange={e => this.checkAndSetZipoCode(e)}
             placeholder="zip code"
@@ -31,7 +31,7 @@ class Search extends React.Component {
             type="number"
             value={this.state.zipcode}
           />
-          <br />
+          <br /> */}
           Enter someting about the kind of food are you looking for:
           <Input
             onChange={e => this.setState({ value: e.target.value })}

@@ -4,8 +4,8 @@ import Restaurant from "./Restaurant";
 
 const RestaurantsContainer = ({ restaurants, selectRestaurant }) => {
   return (
-    <div>
-      <div>
+    <div centered>
+      <div centered>
         {restaurants.map(restaurant => (
           // <Card centered>
           <Restaurant
