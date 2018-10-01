@@ -1,13 +1,16 @@
 import React, { Component } from "react";
+import { Route, Switch, Redirect, withRouter } from "react-router-dom";
+import Calendar from "./components/Calendar";
+import { Grid } from "semantic-ui-react";
+
 import logo from "./logo.svg";
 import "./App.css";
-
-import Calendar from "./components/Calendar";
+import LoginForm from './components/LoginForm'
+import RegisterForm from './components/RegisterForm'
 import Header from "./components/Header";
 import Pick from "./components/Pick";
 import Search from "./components/Search";
 import RestaurantsContainer from "./components/RestaurantsContainer";
-import { Grid } from "semantic-ui-react";
 import RestaurantDetail from "./components/RestaurantDetail";
 import PicksContainer from './components/PicksContainer'
 import API_KEY from "./config.js";
@@ -20,11 +23,29 @@ class App extends React.Component {
       selected: null,
       picks: [],
       isPick: false,
-      pickId: null
+      pickId: null,
+      userInfo: null
     };
   }
 
+  updateUserInfo = userInfo => this.setState({ userInfo });
+
   componentDidMount = () => {
+    const url = "http://localhost:3000/api/v1/profile";
+    const token = localStorage.getItem("token");
+    if (token) {
+      fetch(url, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+        .then(res => res.json())
+        .then(response => {
+          this.updateUserInfo(response.user);
+          // this.context.history.push("/profile");
+        });
+    }
+  
     // this.fetchPicks();
   };
 
@@ -44,10 +65,18 @@ class App extends React.Component {
   fetchPicks = () => {
     fetch('http://localhost:3000/api/v1/picks')
     .then(res => res.json())
-    .then(json => this.setState({
+    .then(json => {
+      debugger;
+      this.setState({
       picks: json
-    }))
+    })
+    })
   }
+
+  logout = () => {
+    localStorage.clear();
+    this.setState({ userInfo: null });
+  };
 
   selectRestaurant = restaurant => {
     this.setState({
@@ -96,7 +125,19 @@ class App extends React.Component {
 
     return (
       <div className="App">
-        <Header />
+        <Header userInfo={this.state.userInfo} logout={this.logout}/>
+        <Route
+          exact
+          path="/login"
+          render={() => <LoginForm 
+            updateUserInfo={this.updateUserInfo} />}
+          />
+          <Route
+            exact 
+            path="/register"
+            render={() => <RegisterForm updateUserInfo={this.updateUserInfo}/>}
+          />
+        <Route exact path="/" render={() => 
         <Grid>
           <Grid.Row columns={1}>
             <Grid.Column>
@@ -133,7 +174,7 @@ class App extends React.Component {
               fetchPickRestaurant={this.fetchPickRestaurant}/>
             </Grid.Column>
           </Grid.Row>
-        </Grid>
+        </Grid>}/>
         {/* <Calendar /> */}
       </div>
     );

@@ -7,7 +7,6 @@ class PicksContainer extends React.Component {
     }
     
     render() {
-        // debugger
         return (
             <div>
                 {this.props.picks.map(pick => <Pick 

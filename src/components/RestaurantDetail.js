@@ -21,7 +21,6 @@ class RestaurantDetail extends React.Component {
   }
 
   handleAddPick = () => {
-    debugger
     const data = {
       user_id: 1,
       restaurant_id: this.props.restaurant.R.res_id,
@@ -30,11 +29,13 @@ class RestaurantDetail extends React.Component {
       votes: 1,
       confirmed: false
     };
+    const token = localStorage.getItem('token')
     fetch("http://localhost:3000/api/v1/picks", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Accept: "application/json"
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`
       },
       body: JSON.stringify(data)
     })
