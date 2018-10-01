@@ -1,5 +1,4 @@
 import React from "react";
-
 import { Card, Icon, Image, Grid, Button } from "semantic-ui-react";
 import DatePicker from "react-datepicker";
 import moment from "moment";
@@ -24,7 +23,7 @@ class RestaurantDetail extends React.Component {
     const data = {
       user_id: 1,
       restaurant_id: this.props.restaurant.R.res_id,
-      restaurant_name: this.props.restaurant.name,
+      restaurant_name: this.props.restaurant.R.name,
       date: this.state.mealDate._d,
       votes: 1,
       confirmed: false
@@ -42,45 +41,54 @@ class RestaurantDetail extends React.Component {
       .then(res => res.json())
       .then(json => {
         console.log(json);
-        this.props.fetchPicks()
+        this.props.fetchPicks();
       });
-  }
+  };
 
   render() {
+    // debugger;
+
     return (
       <Grid columns={2}>
         <Grid.Column>
-          <Card>
+          <Card centered>
             <h1>{this.props.restaurant.name}</h1>
-            <div>
-              Address: {this.props.restaurant.location.address}
-            </div>
+            <div>Address: {this.props.restaurant.location.address}</div>
             <div>Cuisine(s): {this.props.restaurant.cuisines}</div>
             <div>
-              User Rating:{" "}
-              {this.props.restaurant.user_rating.rating_text}
+              User Rating: {this.props.restaurant.user_rating.rating_text}
             </div>
             <div>
-              Cost for Two: ${
-                this.props.restaurant.average_cost_for_two
-              }
+              Cost for Two: ${this.props.restaurant.average_cost_for_two}
             </div>
           </Card>
         </Grid.Column>
         <Grid.Column>
-          <Grid.Row>A map maybe?</Grid.Row>
+          <Grid.Row>
+            {/* for more information on manupulating this map, check out https://staticmapmaker.com/google/ */}
+            <Image
+              centered
+              circular
+              src={`https://maps.googleapis.com/maps/api/staticmap?center=${
+                this.props.restaurant.location.latitude
+              },+${
+                this.props.restaurant.location.longitude
+              }&zoom=16&scale=1&size=400x250&maptype=roadmap&key=AIzaSyCzEZmyQvVoarnp7tMuWYmpDd95t5MLXm4&format=png&visual_refresh=true&markers=size:mid%7Ccolor:0x800080%7Clabel:${
+                this.props.restaurant.name
+              }%7C${this.props.restaurant.location.latitude},+${
+                this.props.restaurant.location.longitude
+              }`}
+            />
+          </Grid.Row>
           <Grid.Row>
             <DatePicker
               selected={this.state.mealDate}
               onChange={this.handleChange}
             />
-            {!this.props.isPick ?
-            <div>
-            <Button onClick={this.handleAddPick.bind(this)}>Add to your picks</Button>
+            <Button onClick={this.handleAddPick.bind(this)}>
+              Add to your picks
+            </Button>
             <Button>Add to my favorites</Button>
-            </div> :
-            <Button onClick={() => this.props.voteOnPick()}>Vote on this pick</Button>
-            }
           </Grid.Row>
         </Grid.Column>
       </Grid>
