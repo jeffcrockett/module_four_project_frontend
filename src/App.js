@@ -78,7 +78,6 @@ class App extends React.Component {
 
   editComment = (comment) => {
     console.log('comment id is ', comment.id)
-    debugger
     fetch(`http://localhost:3000/api/v1/comments/${comment.id}`, {
       method: 'PATCH',
       headers: {
@@ -87,12 +86,17 @@ class App extends React.Component {
       },
       body: JSON.stringify({content: comment.content})
     }).then(res => res.json())
-    .then(json => console.log(json))
-      .then(fetch(`http://localhost:3000/api/v1/picks/${this.state.pickId}`)
+    .then(json => {
+      console.log(json)
+      fetch(`http://localhost:3000/api/v1/picks/${this.state.pickId}`)
         .then(res => res.json())
-        .then(json => this.setState({
+        .then(json => {
+          this.setState({
           comments: json.comments
-        })))
+        })
+      })
+        })
+      
   }
 
   fetchPicks = () => {
