@@ -13,7 +13,8 @@ class CommentsContainer extends React.Component {
     render() {
         return (
             <div>
-                {this.props.comments.map(comment => <Comment comment={comment}/>)}
+                {this.props.comments.map(comment => <Comment userInfo={this.props.userInfo}
+                comment={comment} editComment={this.props.editComment}/>)}
             </div>
         )
     }

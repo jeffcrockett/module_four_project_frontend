@@ -76,6 +76,25 @@ class App extends React.Component {
       });
   };
 
+  editComment = (comment) => {
+    console.log('comment id is ', comment.id)
+    debugger
+    fetch(`http://localhost:3000/api/v1/comments/${comment.id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({content: comment.content})
+    }).then(res => res.json())
+    .then(json => console.log(json))
+      .then(fetch(`http://localhost:3000/api/v1/picks/${this.state.pickId}`)
+        .then(res => res.json())
+        .then(json => this.setState({
+          comments: json.comments
+        })))
+  }
+
   fetchPicks = () => {
     fetch("http://localhost:3000/api/v1/picks")
       .then(res => res.json())
@@ -239,6 +258,7 @@ class App extends React.Component {
                       voteOnPick={this.voteOnPick}
                       userInfo={this.state.userInfo}
                       comments={this.state.comments}
+                      editComment={this.editComment}
                     />
                   ) : (
                     ""
