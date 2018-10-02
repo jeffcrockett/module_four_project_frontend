@@ -56,7 +56,12 @@ class RestaurantDetail extends React.Component {
 
     return (
       <Grid columns={2}>
-        <Grid.Column>
+        <Grid.Column
+          style={{
+            "margin-top": "3em",
+            color: "rgba(210, 23, 23, 0.87)"
+          }}
+        >
           <Card centered>
             <h1>{this.props.restaurant.name}</h1>
             <div>Address: {this.props.restaurant.location.address}</div>
@@ -73,6 +78,7 @@ class RestaurantDetail extends React.Component {
           <Grid.Row>
             {/* for more information on manupulating this map, check out https://staticmapmaker.com/google/ */}
             <Image
+              style={{ "margin-bottom": "15px" }}
               centered
               circular
               src={`https://maps.googleapis.com/maps/api/staticmap?center=${
