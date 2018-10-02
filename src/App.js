@@ -9,7 +9,6 @@ import API_KEY from "./config.js";
 import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
 
-// import Calendar from "./components/Calendar";
 import Map from "./components/Map";
 import Header from "./components/Header";
 import FrontPage from "./components/FrontPage";
@@ -21,7 +20,6 @@ import RestaurantDetail from "./components/RestaurantDetail";
 import PicksContainer from "./components/PicksContainer";
 
 class App extends React.Component {
-  // zipcodes = require("zipcodes");
   constructor() {
     super();
     this.state = {
@@ -50,7 +48,6 @@ class App extends React.Component {
         .then(res => res.json())
         .then(response => {
           this.updateUserInfo(response.user);
-          // this.context.history.push("/profile");
         });
       this.fetchPicks();
     }
@@ -99,11 +96,9 @@ class App extends React.Component {
   };
 
   getRestaurants = query => {
-    // debugger;
     fetch(`http://api.zippopotam.us/us/${query.zipcode}`)
       .then(r => r.json())
       .then(json => {
-        debugger;
         fetch(
           `https://developers.zomato.com/api/v2.1/search?q=${query.value}&lat=${
             json.places[0].latitude
@@ -213,26 +208,37 @@ class App extends React.Component {
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row relaxed columns={2}>
-                <Grid.Column>
-                  <Grid.Row>
+                <Grid.Column floated="right">
+                  <Grid.Row padded>
                     <Search getRestaurants={this.getRestaurants} />
                   </Grid.Row>
                   <Grid.Row
-                    centered
-                    padded
                     style={{
                       overflow: "scroll",
-                      "max-height": "500px",
-                      display: "flex"
+                      "overflow-x": "hidden",
+                      "max-height": "400px"
                     }}
                   >
-                    <RestaurantsContainer
-                      restaurants={this.state.restaurants}
-                      selectRestaurant={this.selectRestaurant}
-                    />
+                    <Grid.Column
+                      padded
+                      style={{
+                        display: "inline-block"
+                      }}
+                    >
+                      <RestaurantsContainer
+                        restaurants={this.state.restaurants}
+                        selectRestaurant={this.selectRestaurant}
+                      />
+                    </Grid.Column>
                   </Grid.Row>
                 </Grid.Column>
-                <Grid.Column>
+                <Grid.Column
+                  style={{
+                    overflow: "scroll",
+                    "max-height": "400px",
+                    "overflow-x": "hidden"
+                  }}
+                >
                   <PicksContainer
                     handleSortChange={this.handleSortChange}
                     picks={this.state.picks}

@@ -14,6 +14,12 @@ class Search extends React.Component {
     this.state.zipcode.length < 5 && this.setState({ zipcode: e.target.value });
   };
 
+  resetZip = () => {
+    this.setState({
+      zipcode: ""
+    });
+  };
+
   render() {
     return (
       <form
@@ -24,6 +30,7 @@ class Search extends React.Component {
       >
         <Form>
           Enter a zipcode to search near:
+          <br />
           <Input
             onChange={e => this.checkAndSetZipoCode(e)}
             placeholder="zip code"
@@ -31,8 +38,12 @@ class Search extends React.Component {
             type="number"
             value={this.state.zipcode}
           />
+          <Button icon onClick={this.resetZip}>
+            <Icon name="redo" />
+          </Button>
           <br />
-          Enter someting about the kind of food are you looking for:
+          What kind of food are you looking for:
+          <br />
           <Input
             onChange={e => this.setState({ value: e.target.value })}
             placeholder="Search..."
