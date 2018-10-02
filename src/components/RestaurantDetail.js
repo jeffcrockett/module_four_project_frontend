@@ -97,7 +97,8 @@ class RestaurantDetail extends React.Component {
           {this.props.comments.length > 0 && <Card>
             <CommentsContainer comments={this.props.comments}
             editComment={this.props.editComment}
-            userInfo={this.props.userInfo}/>
+            userInfo={this.props.userInfo}
+            deleteComment={this.props.deleteComment}/>
             </Card>}
         </Grid.Column>
         <Grid.Column>

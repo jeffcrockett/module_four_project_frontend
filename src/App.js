@@ -125,6 +125,21 @@ class App extends React.Component {
     console.log(this.state.selected);
   };
 
+  deleteComment = (id) => {
+    fetch(`http://localhost:3000/api/v1/comments/${id}`, {
+      method: 'DELETE',
+      body: JSON.stringify({id: id})
+    }).then(res => res.json()).then(json => {
+      fetch(`http://localhost:3000/api/v1/picks/${this.state.pickId}`)
+        .then(res => res.json())
+        .then(json => {
+          this.setState({
+            comments: json.comments
+          })
+        })
+    })
+  }
+
   commentOnPick = (content) => {
     debugger
     // const token = localStorage.getItem('token')
@@ -263,6 +278,7 @@ class App extends React.Component {
                       userInfo={this.state.userInfo}
                       comments={this.state.comments}
                       editComment={this.editComment}
+                      deleteComment={this.deleteComment}
                     />
                   ) : (
                     ""

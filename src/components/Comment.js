@@ -31,7 +31,7 @@ class Comment extends React.Component {
                 {this.props.comment.user.id === this.props.userInfo.id &&
                 <Fragment>
                     <Button onClick={() => this.setState({editing: !this.state.editing})}>Edit</Button>
-                    <Button>Delete</Button>
+                    <Button onClick={() => this.props.deleteComment(this.props.comment.id)}>Delete</Button>
                 </Fragment>
                 }
             </div>
