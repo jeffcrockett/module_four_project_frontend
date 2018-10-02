@@ -83,6 +83,7 @@ class App extends React.Component {
   logout = () => {
     localStorage.clear();
     this.setState({ userInfo: null });
+    // this.props.history.push('/main')
   };
 
   selectRestaurant = restaurant => {
@@ -96,9 +97,18 @@ class App extends React.Component {
   };
 
   getRestaurants = query => {
+    if(!query.zipcode || !query.value) {
+      alert('Please fill in both fields')
+      return
+    }
     fetch(`http://api.zippopotam.us/us/${query.zipcode}`)
       .then(r => r.json())
       .then(json => {
+        debugger
+        if(Object.keys(json).length === 0) {
+          alert('Please enter a valid zip code')
+          return
+        }
         fetch(
           `https://developers.zomato.com/api/v2.1/search?q=${query.value}&lat=${
             json.places[0].latitude
@@ -190,7 +200,7 @@ class App extends React.Component {
             render={() => <RegisterForm updateUserInfo={this.updateUserInfo} />}
           />
 
-          <Route path="/main">
+          <Route path="/">
             <Grid>
               <Grid.Row columns={1}>
                 <Grid.Column>

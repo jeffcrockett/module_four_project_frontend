@@ -11,7 +11,7 @@ class Search extends React.Component {
   }
 
   checkAndSetZipoCode = e => {
-    this.state.zipcode.length < 5 && this.setState({ zipcode: e.target.value });
+    this.setState({ zipcode: e.target.value });
   };
 
   resetZip = () => {
@@ -38,9 +38,9 @@ class Search extends React.Component {
             type="number"
             value={this.state.zipcode}
           />
-          <Button icon onClick={this.resetZip}>
+          {/* <Button icon onClick={this.resetZip}>
             <Icon name="redo" />
-          </Button>
+          </Button> */}
           <br />
           What kind of food are you looking for:
           <br />

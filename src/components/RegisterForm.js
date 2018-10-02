@@ -40,7 +40,7 @@ class RegisterForm extends React.Component {
         localStorage.setItem("token", response.jwt);
         console.log(response);
         this.props.updateUserInfo(response.user);
-        this.props.history.push("/");
+        this.props.history.push("/main");
       });
   };
 

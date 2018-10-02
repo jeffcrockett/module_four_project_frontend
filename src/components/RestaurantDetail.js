@@ -80,7 +80,7 @@ class RestaurantDetail extends React.Component {
           <Grid.Row>
             {/* for more information on manupulating this map, check out https://staticmapmaker.com/google/ */}
             <Image
-              style={{ "margin-bottom": "15px" }}
+              style={{ "marginBottom": "15px" }}
               centered
               circular
               src={`https://maps.googleapis.com/maps/api/staticmap?center=${
