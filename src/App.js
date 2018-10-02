@@ -30,7 +30,8 @@ class App extends React.Component {
       pickId: null,
       userInfo: null,
       mapAddress: null,
-      sortFilter: "date"
+      sortFilter: "date",
+      comments: []
     };
   }
 
@@ -67,6 +68,11 @@ class App extends React.Component {
           pickId: pickId,
           pickVotes: pickVotes
         });
+        fetch(`http://localhost:3000/api/v1/picks/${this.state.pickId}`)
+        .then(res => res.json())
+        .then(json => this.setState({
+          comments: json.comments
+        }))
       });
   };
 
@@ -95,6 +101,26 @@ class App extends React.Component {
 
     console.log(this.state.selected);
   };
+
+  commentOnPick = (content) => {
+    debugger
+    // const token = localStorage.getItem('token')
+    // console.log('pick id is ', this.state.pickId)
+    // console.log('user id is ', this.state.userInfo.id)
+    fetch(`http://localhost:3000/api/v1/comments/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({user_id: this.state.userInfo.id,
+      pick_id: this.state.pickId,
+    content: content})
+    }).then(res => res.json()).then(json => {
+      console.log(json);
+      this.fetchPicks()
+    })
+  }
 
   getRestaurants = query => {
     if(!query.zipcode || !query.value) {
@@ -209,8 +235,10 @@ class App extends React.Component {
                       restaurant={this.state.selected}
                       fetchPicks={this.fetchPicks}
                       isPick={this.state.isPick}
+                      commentOnPick={this.commentOnPick}
                       voteOnPick={this.voteOnPick}
                       userInfo={this.state.userInfo}
+                      comments={this.state.comments}
                     />
                   ) : (
                     ""

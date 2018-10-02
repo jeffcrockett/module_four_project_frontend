@@ -1,17 +1,35 @@
 import React, { Fragment } from "react";
 import { Redirect } from "react-router-dom";
-import { Card, Icon, Image, Grid, Button } from "semantic-ui-react";
+import { Card, Icon, Image, Grid, Button, Modal, Header } from "semantic-ui-react";
 import DatePicker from "react-datepicker";
 import moment from "moment";
+
+import CommentsContainer from './CommentsContainer';
 import "react-datepicker/dist/react-datepicker.css";
 
 class RestaurantDetail extends React.Component {
   constructor() {
     super();
     this.state = {
-      mealDate: moment()
+      mealDate: moment(),
+      modalOpen: false,
+      comments: [
+        {
+          user_id: 1,
+          content: 'First comment'
+        }, 
+        { 
+          user_id: 2,
+          content: 'Second comment'
+        }
+      ],
+      newComment: ''
     };
     this.handleChange = this.handleChange.bind(this);
+  }
+
+  componentDidMount = () => {
+
   }
 
   handleChange(date) {
@@ -75,6 +93,10 @@ class RestaurantDetail extends React.Component {
               Cost for Two: ${this.props.restaurant.average_cost_for_two}
             </div>
           </Card>
+          
+          {this.props.comments.length > 0 && <Card>
+            <CommentsContainer comments={this.props.comments}/>
+            </Card>}
         </Grid.Column>
         <Grid.Column>
           <Grid.Row>
@@ -107,7 +129,28 @@ class RestaurantDetail extends React.Component {
                 <Button>Add to my favorites</Button>
               </Fragment>
             ) : (
+              <Fragment>
               <Button onClick={this.props.voteOnPick}>Vote</Button>
+              <Modal trigger={<Button onClick={() => {
+                this.setState({ modalOpen: true })
+              }}>Comment</Button>}
+              onClose={() => this.setState({modalOpen: false})}
+              basic size='small'>
+              <Header content="Add comment"/>
+              <Modal.Content>
+                <form onSubmit={(e) => {
+                  e.preventDefault()
+                  this.setState({modalOpen: false});
+                  this.props.commentOnPick(this.state.newComment)
+                }}>
+                  <textarea placeholder="Write your comment here" 
+                  value={this.state.newComment}
+                  onChange={(e) => this.setState({newComment: e.target.value})}/>
+                  <input type="submit" value="Submit"/>
+                  </form>
+                </Modal.Content>
+              </Modal>
+              </Fragment>
             )}
           </Grid.Row>
         </Grid.Column>
