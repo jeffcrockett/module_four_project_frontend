@@ -121,23 +121,32 @@ class App extends React.Component {
   };
 
   voteOnPick = () => {
-    const updatedVotes = this.state.pickVotes + 1;
-    fetch(`http://localhost:3000/api/v1/picks/${this.state.pickId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      },
-      body: JSON.stringify({ votes: updatedVotes })
+    fetch(`http://localhost:3000/api/v1/picks/${this.state.pickId}`)
+    .then(res => res.json())
+    .then(json => {
+      debugger
+        if(json.voter_ids && !json.voter_ids.split(',').includes(String(this.state.userInfo.id))){
+        const updatedVotes = this.state.pickVotes + 1;
+        const updatedVoterIds = `${json.voter_ids}${this.state.userInfo.id},`
+        fetch(`http://localhost:3000/api/v1/picks/${this.state.pickId}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json"
+          },
+          body: JSON.stringify({ votes: updatedVotes, voter_ids: updatedVoterIds })
+        })
+          .then(res => res.json())
+          .then(json => {
+            this.setState({
+              pickVotes: json.votes
+            });
+            this.fetchPicks();
+            console.log(json);
+          });
+
+      }
     })
-      .then(res => res.json())
-      .then(json => {
-        this.setState({
-          pickVotes: json.votes
-        });
-        this.fetchPicks();
-        console.log(json);
-      });
   };
 
   removePick = id => {

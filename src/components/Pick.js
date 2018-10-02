@@ -6,12 +6,13 @@ const Pick = ({ pick, fetchPickRestaurant, userInfo, removePick }) => {
   return (
     <div
       onClick={() => {
-        if (!(pick.user_id === userInfo.id)) {
+        // if (!(pick.user_id === userInfo.id)) {
           fetchPickRestaurant(pick.restaurant_id, pick.id, pick.votes);
-        } else {
-          console.log("pick user id is ", pick.user_id);
-          console.log("user id is ", userInfo.id);
-        }
+        // } 
+        // else {
+        //   console.log("pick user id is ", pick.user_id);
+        //   console.log("user id is ", userInfo.id);
+        // }
       }}
     >
       {pick && userInfo ? (

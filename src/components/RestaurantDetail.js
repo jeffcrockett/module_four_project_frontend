@@ -22,13 +22,15 @@ class RestaurantDetail extends React.Component {
 
   handleAddPick = () => {
     if (this.props.userInfo) {
+      debugger
       const data = {
         user_id: this.props.userInfo.id,
         restaurant_id: this.props.restaurant.R.res_id,
         restaurant_name: this.props.restaurant.name,
         date: this.state.mealDate._d,
         votes: 1,
-        confirmed: false
+        confirmed: false,
+        voter_ids: `${this.props.userInfo.id},`
       };
       const token = localStorage.getItem("token");
       fetch("http://localhost:3000/api/v1/picks", {
