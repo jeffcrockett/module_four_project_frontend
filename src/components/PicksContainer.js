@@ -15,31 +15,41 @@ class PicksContainer extends React.Component {
     // console.log("sorted picks are ", sortedPicks);
     return (
       <div>
-        Sort by:
-        <input
-          name="filter"
-          type="radio"
-          value="votes"
-          onChange={e => this.props.handleSortChange(e)}
-        />{" "}
-        Votes
-        <input
-          // checked="checked"
-          // selected="true"
-          name="filter"
-          type="radio"
-          value="date"
-          onChange={e => this.props.handleSortChange(e)}
-        />{" "}
-        Date
-        {this.props.picks.map(pick => (
-          <Pick
-            pick={pick}
-            fetchPickRestaurant={this.props.fetchPickRestaurant}
-            userInfo={this.props.userInfo}
-            removePick={this.props.removePick}
-          />
-        ))}
+        <div style={{ margin: "15px auto" }}>
+          Sort by:
+          <input
+            name="filter"
+            type="radio"
+            value="votes"
+            onChange={e => this.props.handleSortChange(e)}
+          />{" "}
+          Votes
+          <input
+            // checked="checked"
+            // selected="true"
+            name="filter"
+            type="radio"
+            value="date"
+            onChange={e => this.props.handleSortChange(e)}
+          />{" "}
+          Date
+        </div>
+        <div
+          style={{
+            overflow: "scroll",
+            "max-height": "400px",
+            "overflow-x": "hidden"
+          }}
+        >
+          {this.props.picks.map(pick => (
+            <Pick
+              pick={pick}
+              fetchPickRestaurant={this.props.fetchPickRestaurant}
+              userInfo={this.props.userInfo}
+              removePick={this.props.removePick}
+            />
+          ))}
+        </div>
       </div>
     );
   }

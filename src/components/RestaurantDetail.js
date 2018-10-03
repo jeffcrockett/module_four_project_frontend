@@ -1,10 +1,18 @@
 import React, { Fragment } from "react";
 import { Redirect } from "react-router-dom";
-import { Card, Icon, Image, Grid, Button, Modal, Header } from "semantic-ui-react";
+import {
+  Card,
+  Icon,
+  Image,
+  Grid,
+  Button,
+  Modal,
+  Header
+} from "semantic-ui-react";
 import DatePicker from "react-datepicker";
 import moment from "moment";
 
-import CommentsContainer from './CommentsContainer';
+import CommentsContainer from "./CommentsContainer";
 import "react-datepicker/dist/react-datepicker.css";
 
 class RestaurantDetail extends React.Component {
@@ -16,21 +24,19 @@ class RestaurantDetail extends React.Component {
       comments: [
         {
           user_id: 1,
-          content: 'First comment'
-        }, 
-        { 
+          content: "First comment"
+        },
+        {
           user_id: 2,
-          content: 'Second comment'
+          content: "Second comment"
         }
       ],
-      newComment: ''
+      newComment: ""
     };
     this.handleChange = this.handleChange.bind(this);
   }
 
-  componentDidMount = () => {
-
-  }
+  componentDidMount = () => {};
 
   handleChange(date) {
     this.setState({
@@ -40,7 +46,7 @@ class RestaurantDetail extends React.Component {
 
   handleAddPick = () => {
     if (this.props.userInfo) {
-      debugger
+      debugger;
       const data = {
         user_id: this.props.userInfo.id,
         restaurant_id: this.props.restaurant.R.res_id,
@@ -93,19 +99,24 @@ class RestaurantDetail extends React.Component {
               Cost for Two: ${this.props.restaurant.average_cost_for_two}
             </div>
           </Card>
-          
-          {this.props.comments.length > 0 && <Card>
-            <CommentsContainer comments={this.props.comments}
-            editComment={this.props.editComment}
-            userInfo={this.props.userInfo}
-            deleteComment={this.props.deleteComment}/>
-            </Card>}
+
+          {this.props.comments &&
+            this.props.comments.length > 0 && (
+              <Card centered>
+                <CommentsContainer
+                  comments={this.props.comments}
+                  editComment={this.props.editComment}
+                  userInfo={this.props.userInfo}
+                  deleteComment={this.props.deleteComment}
+                />
+              </Card>
+            )}
         </Grid.Column>
         <Grid.Column>
           <Grid.Row>
             {/* for more information on manupulating this map, check out https://staticmapmaker.com/google/ */}
             <Image
-              style={{ "marginBottom": "15px" }}
+              style={{ marginBottom: "15px" }}
               centered
               circular
               src={`https://maps.googleapis.com/maps/api/staticmap?center=${
@@ -129,30 +140,45 @@ class RestaurantDetail extends React.Component {
                 <Button onClick={this.handleAddPick.bind(this)}>
                   Add to your picks
                 </Button>
-                <Button>Add to my favorites</Button>
+                {/* <Button>Add to my favorites</Button> */}
               </Fragment>
             ) : (
               <Fragment>
-              <Button onClick={this.props.voteOnPick}>Vote</Button>
-              <Modal trigger={<Button onClick={() => {
-                this.setState({ modalOpen: true })
-              }}>Comment</Button>}
-              onClose={() => this.setState({modalOpen: false})}
-              basic size='small'>
-              <Header content="Add comment"/>
-              <Modal.Content>
-                <form onSubmit={(e) => {
-                  e.preventDefault()
-                  this.setState({modalOpen: false});
-                  this.props.commentOnPick(this.state.newComment)
-                }}>
-                  <textarea placeholder="Write your comment here" 
-                  value={this.state.newComment}
-                  onChange={(e) => this.setState({newComment: e.target.value})}/>
-                  <input type="submit" value="Submit"/>
-                  </form>
-                </Modal.Content>
-              </Modal>
+                <Button onClick={this.props.voteOnPick}>Vote</Button>
+                <Modal
+                  trigger={
+                    <Button
+                      onClick={() => {
+                        this.setState({ modalOpen: true });
+                      }}
+                    >
+                      Comment
+                    </Button>
+                  }
+                  onClose={() => this.setState({ modalOpen: false })}
+                  basic
+                  size="small"
+                >
+                  <Header content="Add comment" />
+                  <Modal.Content>
+                    <form
+                      onSubmit={e => {
+                        e.preventDefault();
+                        this.setState({ modalOpen: false });
+                        this.props.commentOnPick(this.state.newComment);
+                      }}
+                    >
+                      <textarea
+                        placeholder="Write your comment here"
+                        value={this.state.newComment}
+                        onChange={e =>
+                          this.setState({ newComment: e.target.value })
+                        }
+                      />
+                      <input type="submit" value="Submit" />
+                    </form>
+                  </Modal.Content>
+                </Modal>
               </Fragment>
             )}
           </Grid.Row>

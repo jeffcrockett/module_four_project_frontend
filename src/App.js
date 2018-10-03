@@ -69,35 +69,37 @@ class App extends React.Component {
           pickVotes: pickVotes
         });
         fetch(`http://localhost:3000/api/v1/picks/${this.state.pickId}`)
-        .then(res => res.json())
-        .then(json => this.setState({
-          comments: json.comments
-        }))
+          .then(res => res.json())
+          .then(json =>
+            this.setState({
+              comments: json.comments
+            })
+          );
       });
   };
 
-  editComment = (comment) => {
-    console.log('comment id is ', comment.id)
+  editComment = comment => {
+    console.log("comment id is ", comment.id);
     fetch(`http://localhost:3000/api/v1/comments/${comment.id}`, {
-      method: 'PATCH',
+      method: "PATCH",
       headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        "Content-Type": "application/json",
+        Accept: "application/json"
       },
-      body: JSON.stringify({content: comment.content})
-    }).then(res => res.json())
-    .then(json => {
-      console.log(json)
-      fetch(`http://localhost:3000/api/v1/picks/${this.state.pickId}`)
-        .then(res => res.json())
-        .then(json => {
-          this.setState({
-          comments: json.comments
-        })
-      })
-        })
-      
-  }
+      body: JSON.stringify({ content: comment.content })
+    })
+      .then(res => res.json())
+      .then(json => {
+        console.log(json);
+        fetch(`http://localhost:3000/api/v1/picks/${this.state.pickId}`)
+          .then(res => res.json())
+          .then(json => {
+            this.setState({
+              comments: json.comments
+            });
+          });
+      });
+  };
 
   fetchPicks = () => {
     fetch("http://localhost:3000/api/v1/picks")
@@ -125,53 +127,59 @@ class App extends React.Component {
     console.log(this.state.selected);
   };
 
-  deleteComment = (id) => {
+  deleteComment = id => {
     fetch(`http://localhost:3000/api/v1/comments/${id}`, {
-      method: 'DELETE',
-      body: JSON.stringify({id: id})
-    }).then(res => res.json()).then(json => {
-      fetch(`http://localhost:3000/api/v1/picks/${this.state.pickId}`)
-        .then(res => res.json())
-        .then(json => {
-          this.setState({
-            comments: json.comments
-          })
-        })
+      method: "DELETE",
+      body: JSON.stringify({ id: id })
     })
-  }
+      .then(res => res.json())
+      .then(json => {
+        fetch(`http://localhost:3000/api/v1/picks/${this.state.pickId}`)
+          .then(res => res.json())
+          .then(json => {
+            this.setState({
+              comments: json.comments
+            });
+          });
+      });
+  };
 
-  commentOnPick = (content) => {
-    debugger
+  commentOnPick = content => {
+    // debugger;
     // const token = localStorage.getItem('token')
     // console.log('pick id is ', this.state.pickId)
     // console.log('user id is ', this.state.userInfo.id)
     fetch(`http://localhost:3000/api/v1/comments/`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        "Content-Type": "application/json",
+        Accept: "application/json"
       },
-      body: JSON.stringify({user_id: this.state.userInfo.id,
-      pick_id: this.state.pickId,
-    content: content})
-    }).then(res => res.json()).then(json => {
-      console.log(json);
-      this.fetchPicks()
+      body: JSON.stringify({
+        user_id: this.state.userInfo.id,
+        pick_id: this.state.pickId,
+        content: content
+      })
     })
-  }
+      .then(res => res.json())
+      .then(json => {
+        console.log(json);
+        this.fetchPicks();
+      });
+  };
 
   getRestaurants = query => {
-    if(!query.zipcode || !query.value) {
-      alert('Please fill in both fields')
-      return
+    if (!query.zipcode || !query.value) {
+      alert("Please fill in both fields");
+      return;
     }
     fetch(`http://api.zippopotam.us/us/${query.zipcode}`)
       .then(r => r.json())
       .then(json => {
-        debugger
-        if(Object.keys(json).length === 0) {
-          alert('Please enter a valid zip code')
-          return
+        // debugger;
+        if (Object.keys(json).length === 0) {
+          alert("Please enter a valid zip code");
+          return;
         }
         fetch(
           `https://developers.zomato.com/api/v2.1/search?q=${query.value}&lat=${
@@ -191,31 +199,36 @@ class App extends React.Component {
 
   voteOnPick = () => {
     fetch(`http://localhost:3000/api/v1/picks/${this.state.pickId}`)
-    .then(res => res.json())
-    .then(json => {
-      debugger
-        if(json.voter_ids && !json.voter_ids.split(',').includes(String(this.state.userInfo.id))){
-        const updatedVotes = this.state.pickVotes + 1;
-        const updatedVoterIds = `${json.voter_ids}${this.state.userInfo.id},`
-        fetch(`http://localhost:3000/api/v1/picks/${this.state.pickId}`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json"
-          },
-          body: JSON.stringify({ votes: updatedVotes, voter_ids: updatedVoterIds })
-        })
-          .then(res => res.json())
-          .then(json => {
-            this.setState({
-              pickVotes: json.votes
+      .then(res => res.json())
+      .then(json => {
+        // debugger;
+        if (
+          json.voter_ids &&
+          !json.voter_ids.split(",").includes(String(this.state.userInfo.id))
+        ) {
+          const updatedVotes = this.state.pickVotes + 1;
+          const updatedVoterIds = `${json.voter_ids}${this.state.userInfo.id},`;
+          fetch(`http://localhost:3000/api/v1/picks/${this.state.pickId}`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json"
+            },
+            body: JSON.stringify({
+              votes: updatedVotes,
+              voter_ids: updatedVoterIds
+            })
+          })
+            .then(res => res.json())
+            .then(json => {
+              this.setState({
+                pickVotes: json.votes
+              });
+              this.fetchPicks();
+              console.log(json);
             });
-            this.fetchPicks();
-            console.log(json);
-          });
-
-      }
-    })
+        }
+      });
   };
 
   removePick = id => {
@@ -290,33 +303,29 @@ class App extends React.Component {
                   <Grid.Row padded>
                     <Search getRestaurants={this.getRestaurants} />
                   </Grid.Row>
-                  <Grid.Row
-                    style={{
-                      overflow: "scroll",
-                      "overflow-x": "hidden",
-                      "max-height": "400px"
-                    }}
-                  >
-                    <Grid.Column
-                      padded
+                  {this.state.restaurants.length > 0 && (
+                    <Grid.Row
                       style={{
-                        display: "inline-block"
+                        overflow: "scroll",
+                        "overflow-x": "hidden",
+                        "max-height": "400px"
                       }}
                     >
-                      <RestaurantsContainer
-                        restaurants={this.state.restaurants}
-                        selectRestaurant={this.selectRestaurant}
-                      />
-                    </Grid.Column>
-                  </Grid.Row>
+                      <Grid.Column
+                        padded
+                        style={{
+                          display: "inline-block"
+                        }}
+                      >
+                        <RestaurantsContainer
+                          restaurants={this.state.restaurants}
+                          selectRestaurant={this.selectRestaurant}
+                        />
+                      </Grid.Column>
+                    </Grid.Row>
+                  )}
                 </Grid.Column>
-                <Grid.Column
-                  style={{
-                    overflow: "scroll",
-                    "max-height": "400px",
-                    "overflow-x": "hidden"
-                  }}
-                >
+                <Grid.Column>
                   <PicksContainer
                     handleSortChange={this.handleSortChange}
                     picks={this.state.picks}

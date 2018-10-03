@@ -46,7 +46,14 @@ class RegisterForm extends React.Component {
 
   render() {
     return (
-      <Segment>
+      <Segment
+        style={{
+          margin: "75px auto",
+          width: "50%",
+          border: "2px solid #61dcba",
+          "border-radius": "25px"
+        }}
+      >
         <Form
           onSubmit={this.handleRegister}
           size="mini"
