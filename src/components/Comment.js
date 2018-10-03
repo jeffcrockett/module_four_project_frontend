@@ -11,6 +11,7 @@ class Comment extends React.Component {
   }
 
   render() {
+      debugger
     return (
       <Card
         centered
@@ -43,7 +44,7 @@ class Comment extends React.Component {
         ) : (
           <strong>-{this.props.comment.user.username} </strong>
         )}
-        {this.props.comment.user.id &&
+        {this.props.comment.user && this.props.userInfo &&
           this.props.comment.user.id === this.props.userInfo.id && (
             <Fragment>
               <Button

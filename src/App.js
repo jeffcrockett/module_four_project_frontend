@@ -150,6 +150,10 @@ class App extends React.Component {
     // const token = localStorage.getItem('token')
     // console.log('pick id is ', this.state.pickId)
     // console.log('user id is ', this.state.userInfo.id)
+    if (!this.state.userInfo) {
+      alert('You must be logged in to comment')
+      return 
+    }
     fetch(`http://localhost:3000/api/v1/comments/`, {
       method: "POST",
       headers: {

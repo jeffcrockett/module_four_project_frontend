@@ -22,7 +22,8 @@ class LoginForm extends React.Component {
       method: "POST",
       body: JSON.stringify(params),
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Accept": "application/json"
       }
     })
       .then(r => r.json())
