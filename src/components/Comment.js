@@ -16,9 +16,8 @@ class Comment extends React.Component {
         centered
         style={{ "background-color": "#0000001f", color: "black" }}
       >
-        <h5> Comment from </h5>{" "}
         <h2>
-          <em>{this.props.comment.user.username} </em>
+          <em>"{this.props.comment.content}"</em>
         </h2>{" "}
         <br />
         {this.state.editing ? (
@@ -42,27 +41,28 @@ class Comment extends React.Component {
             <input type="submit" />
           </form>
         ) : (
-          <blockquote>"{this.props.comment.content}"</blockquote>
+          <strong>-{this.props.comment.user.username} </strong>
         )}
-        {this.props.comment.user.id === this.props.userInfo.id && (
-          <Fragment>
-            <Button
-              style={{ margin: "5px auto" }}
-              basic
-              color="teal"
-              onClick={() => this.setState({ editing: !this.state.editing })}
-            >
-              Edit
-            </Button>
-            <Button
-              color="red"
-              basic
-              onClick={() => this.props.deleteComment(this.props.comment.id)}
-            >
-              Delete
-            </Button>
-          </Fragment>
-        )}
+        {this.props.comment.user.id &&
+          this.props.comment.user.id === this.props.userInfo.id && (
+            <Fragment>
+              <Button
+                style={{ margin: "5px auto" }}
+                basic
+                color="teal"
+                onClick={() => this.setState({ editing: !this.state.editing })}
+              >
+                Edit
+              </Button>
+              <Button
+                color="red"
+                basic
+                onClick={() => this.props.deleteComment(this.props.comment.id)}
+              >
+                Delete
+              </Button>
+            </Fragment>
+          )}
       </Card>
     );
   }

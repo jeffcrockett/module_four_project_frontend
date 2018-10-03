@@ -22,7 +22,7 @@ export default class Header extends React.Component {
       <Menu>
         <Link to="/welcome">
           <Menu.Item style={{ display: "inherit" }}>
-            <Image src={MealPix2} size="large" />
+            <Image src={MealPix2} size="medium" />
           </Menu.Item>
         </Link>
 
@@ -36,6 +36,7 @@ export default class Header extends React.Component {
         <Menu.Menu position="right">
           <div className="ui clearing segment">
             {this.props.userInfo ? (
+              // <Menu.Item>{this.props.userInfo.username}</Menu.Item>
               <Link to="/">
                 <h2
                   onClick={this.props.logout}
@@ -43,6 +44,11 @@ export default class Header extends React.Component {
                 >
                   Logout
                 </h2>
+                {this.props.userInfo.username && (
+                  <h4 style={{ color: "red", "pointer-events": "none" }}>
+                    {this.props.userInfo.username}
+                  </h4>
+                )}
               </Link>
             ) : (
               <Fragment>

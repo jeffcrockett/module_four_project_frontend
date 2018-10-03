@@ -38,6 +38,7 @@ class App extends React.Component {
   updateUserInfo = userInfo => this.setState({ userInfo });
 
   componentDidMount = () => {
+    this.fetchPicks();
     const url = "http://localhost:3000/api/v1/profile";
     const token = localStorage.getItem("token");
     if (token) {
@@ -262,8 +263,11 @@ class App extends React.Component {
     // debugger;
     return (
       <div className="App">
-        <Header userInfo={this.state.userInfo} logout={this.logout} />
-        {/* <Map/> */}
+        <Header
+          userInfo={this.state.userInfo}
+          logout={this.logout}
+          style={{ position: "fixed", top: "0", width: "100%" }}
+        />
         <Switch>
           <Route path="/welcome" component={FrontPage} />
           <Route
