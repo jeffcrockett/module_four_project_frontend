@@ -46,7 +46,6 @@ class RestaurantDetail extends React.Component {
 
   handleAddPick = () => {
     if (this.props.userInfo) {
-      debugger;
       const data = {
         user_id: this.props.userInfo.id,
         restaurant_id: this.props.restaurant.R.res_id,
@@ -78,8 +77,6 @@ class RestaurantDetail extends React.Component {
   };
 
   render() {
-    // debugger;
-
     return (
       <Grid columns={2}>
         <Grid.Column

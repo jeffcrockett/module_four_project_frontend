@@ -146,7 +146,6 @@ class App extends React.Component {
   };
 
   commentOnPick = content => {
-    // debugger;
     // const token = localStorage.getItem('token')
     // console.log('pick id is ', this.state.pickId)
     // console.log('user id is ', this.state.userInfo.id)
@@ -181,7 +180,6 @@ class App extends React.Component {
     fetch(`http://api.zippopotam.us/us/${query.zipcode}`)
       .then(r => r.json())
       .then(json => {
-        // debugger;
         if (Object.keys(json).length === 0) {
           alert("Please enter a valid zip code");
           return;
@@ -206,7 +204,6 @@ class App extends React.Component {
     fetch(`http://localhost:3000/api/v1/picks/${this.state.pickId}`)
       .then(res => res.json())
       .then(json => {
-        // debugger;
         if (
           json.voter_ids &&
           !json.voter_ids.split(",").includes(String(this.state.userInfo.id))
@@ -246,7 +243,6 @@ class App extends React.Component {
   };
 
   handleSortChange = e => {
-    // debugger;
     this.setState({
       sortFilter: e.target.value
     });
@@ -264,7 +260,6 @@ class App extends React.Component {
   };
 
   render() {
-    // debugger;
     return (
       <div className="App">
         <Header

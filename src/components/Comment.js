@@ -11,11 +11,10 @@ class Comment extends React.Component {
   }
 
   render() {
-      debugger
     return (
       <Card
         centered
-        style={{ "background-color": "#0000001f", color: "black" }}
+        style={{ color: "black" }}
       >
         <h2>
           <em>"{this.props.comment.content}"</em>
